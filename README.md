@@ -78,6 +78,66 @@ umount mount
 sudo losetup -d /dev/loop0
 ```
 
+## Usage on MacOS
+
+littlefs-fuse on MacOS utitlizes macFUSE as the FUSE backend. You can download the package (here)
+[https://osxfuse.github.io/]. Alternatively, you can obtain it via homebrew, with limitation that you won't get the Library Framework:
+``` bash
+brew install --cask macfuse
+```
+
+Note that because macFUSE requires kernel extensions to access a filesystem, you will need to give access permissions
+under security settings. Note that for Mac Silicon, this requires going into recovery mode, and reducing security to allow
+user management of kernel extensions from identified developers. See (here)[https://support.apple.com/guide/mac-help/change-security-settings-startup-disk-a-mac-mchl768f7291/mac]
+
+
+Once you have cloned littlefs-fuse, you can compile the program with make:
+``` bash
+make
+```
+
+This should have built the `lfs` program in the top-level directory, and you can do all the fun things that are expressed for the other systems supported. Note that MacOS usually has devices labelled as `dev/diskx`
+
+
+From here we will need a block device. If you don't have removable storage
+handy, you can use a file-backed block device with FreeBSD's loop devices:
+``` bash
+dd if=/dev/zero of=image bs=1m count=1                                  # create a 1 MB image
+hdiutil attach -imagekey diskimage-class=CRawDiskImage -nomount image   # attach the loop device
+sudo chmod 666 /dev/diskX                                               # make loop device user accessible,
+```
+
+littlefs-fuse has two modes of operation, formatting and mounting.
+
+To format a block device, pass the `--format` flag. Note! This will erase any
+data on the block device!
+``` bash
+./lfs --format /dev/diskX
+```
+
+To mount, run littlefs-fuse with a block device and a mountpoint:
+``` bash
+mkdir mount
+./lfs /dev/diskX mount
+```
+
+Once mounted, the littlefs filesystem will be accessible through the
+mountpoint. You can now use the littlefs like you would any other filesystem:
+``` bash
+cd mount
+echo "hello" > hi.txt
+ls
+cat hi.txt
+```
+
+After using littlefs, you can unmount and detach the loop device:
+``` bash
+cd ..
+hdiutil unmount /dev/diskX
+hdiutil detach /dev/diskX
+```
+
+
 ## Usage on FreeBSD
 
 littlefs-fuse requires FUSE version 2.6 or higher, you can find your FUSE

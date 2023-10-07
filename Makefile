@@ -27,6 +27,15 @@ override CFLAGS += -DLFS_MIGRATE
 
 override LFLAGS += -lfuse
 
+
+ifeq ($(OS), Darwin)
+override CFLAGS += -I /usr/local/include/fuse
+override LFLAGS += -L /usr/local/lib
+override LFLAGS += -lfuse
+else
+override LFLAGS += -lfuse
+endif
+
 ifeq ($(OS), FreeBSD)
 override CFLAGS += -I /usr/local/include
 override CFLAGS += -D __BSD_VISIBLE
