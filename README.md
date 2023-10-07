@@ -80,15 +80,14 @@ sudo losetup -d /dev/loop0
 
 ## Usage on MacOS
 
-littlefs-fuse on MacOS utitlizes macFUSE as the FUSE backend. You can download the package (here)
-[https://osxfuse.github.io/]. Alternatively, you can obtain it via homebrew, with limitation that you won't get the Library Framework:
+littlefs-fuse on MacOS utitlizes macFUSE as the FUSE backend. You can download the package [here](https://osxfuse.github.io/). Alternatively, you can obtain it via homebrew, with limitation that you won't get the Library Framework:
 ``` bash
 brew install --cask macfuse
 ```
 
 Note that because macFUSE requires kernel extensions to access a filesystem, you will need to give access permissions
 under security settings. Note that for Mac Silicon, this requires going into recovery mode, and reducing security to allow
-user management of kernel extensions from identified developers. See (here)[https://support.apple.com/guide/mac-help/change-security-settings-startup-disk-a-mac-mchl768f7291/mac]
+user management of kernel extensions from identified developers. See [here](https://support.apple.com/guide/mac-help/change-security-settings-startup-disk-a-mac-mchl768f7291/mac)
 
 
 Once you have cloned littlefs-fuse, you can compile the program with make:
