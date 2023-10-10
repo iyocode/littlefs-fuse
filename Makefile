@@ -25,9 +25,6 @@ override CFLAGS += -D_FILE_OFFSET_BITS=64
 override CFLAGS += -D_XOPEN_SOURCE=700
 override CFLAGS += -DLFS_MIGRATE
 
-override LFLAGS += -lfuse
-
-
 ifeq ($(OS), Darwin)
 override CFLAGS += -I /usr/local/include/fuse
 override LFLAGS += -L /usr/local/lib
