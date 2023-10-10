@@ -116,9 +116,18 @@ data on the block device!
 
 To mount, run littlefs-fuse with a block device and a mountpoint:
 ``` bash
+sudo chmod a+rw /dev/diskX   # required to allow user access
 mkdir mount
 ./lfs /dev/diskX mount
 ```
+Important with the mount function is to specify the disk parameters, for example:
+``` bash
+sudo chmod a+rw /dev/diskX   # required to allow user access
+mkdir mount
+./lfs --read_size=16 --prog_size=16 --block_size=4096 --block_count=128 --cache_size=64 --lookahead_size=32 \
+       /dev/diskX mount
+```
+
 
 Once mounted, the littlefs filesystem will be accessible through the
 mountpoint. You can now use the littlefs like you would any other filesystem:
@@ -128,6 +137,11 @@ echo "hello" > hi.txt
 ls
 cat hi.txt
 ```
+Note that MacOS will also want to upload dot files (i.e. ._hi.txt) you can remove them with `dot_clean -m`
+``` bash
+dot_clean -m mount
+```
+
 
 After using littlefs, you can unmount and detach the loop device:
 ``` bash
